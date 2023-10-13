@@ -1,3 +1,5 @@
+const dotenv = require('dotenv')
+dotenv.config();
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -8,7 +10,7 @@ const corsOptions ={
   credentials:true,            //access-control-allow-credentials:true
   optionSuccessStatus:200,
 }
-const PORT =4000 ;
+const PORT = process.env.PORT || 4000;
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -18,8 +20,9 @@ app.post('/calculate-distance', async (req, res) => {
 
   try {
     // (Google Maps Distance Matrix API) to calculate distance.
+    const API_KEY = process.env.GOOGLE_API;
     const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=AIzaSyAH_K9gdQjQUHPqxNB3MVptcqpv3U0hqUY`
+      `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${API_KEY}`
     );
 
    
@@ -38,3 +41,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
+     
